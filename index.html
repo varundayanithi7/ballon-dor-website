@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ballon d'Or - Historical Winners Hall of Fame</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            300: '#FFE57F',
+                            400: '#FFD700',
+                            500: '#D4AF37',
+                            600: '#AA820A',
+                            700: '#805B00',
+                        },
+                        darkBg: '#080c14',
+                        cardBg: '#131b2e',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #080c14;
+            color: #f3f4f6;
+        }
+        /* Custom Gold Glow & Gradients */
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF099 0%, #F1C40F 50%, #B8860B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .gold-border-glow {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.12);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+        }
+        .gold-border-glow:hover {
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.35);
+            border-color: rgba(255, 215, 0, 0.6);
+        }
+        .glass-panel {
+            background: rgba(19, 27, 46, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #080c14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a364f;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4af37;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-gold-500 selection:text-black">
+
+    <!-- Header / Hero Section -->
+    <header class="relative border-b border-gold-500/20 bg-gradient-to-b from-darkBg via-cardBg/80 to-darkBg pt-8 pb-10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="inline-flex items-center justify-center p-3 mb-4 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-400">
+                <i class="fa-solid fa-trophy text-2xl sm:text-3xl mr-2"></i>
+                <span class="font-semibold text-sm sm:text-base uppercase tracking-widest">France Football Official Legacy</span>
+            </div>
+            <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight gold-gradient-text uppercase mb-3">
+                Ballon d'Or Hall of Fame
+            </h1>
+            <p class="max-w-2xl mx-auto text-gray-400 text-sm sm:text-lg">
+                Explore the complete chronicle of footballing legends who conquered world football from 1956 to present.
+            </p>
+
+            <!-- Dynamic Record Statistics Counter Banner -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 max-w-5xl mx-auto mt-8">
+                <div class="glass-panel rounded-xl p-4 border border-gold-500/20">
+                    <span class="block text-2xl sm:text-3xl font-extrabold text-gold-400" id="stat-total">69</span>
+                    <span class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider">Editions Held</span>
+                </div>
+                <div class="glass-panel rounded-xl p-4 border border-gold-500/20">
+                    <span class="block text-2xl sm:text-3xl font-extrabold text-gold-400" id="stat-top-player">Lionel Messi (8)</span>
+                    <span class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider">Most Player Wins</span>
+                </div>
+                <div class="glass-panel rounded-xl p-4 border border-gold-500/20">
+                    <span class="block text-2xl sm:text-3xl font-extrabold text-gold-400" id="stat-top-club">Real Madrid (12)</span>
+                    <span class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider">Most Wins Club</span>
+                </div>
+                <div class="glass-panel rounded-xl p-4 border border-gold-500/20">
+                    <span class="block text-2xl sm:text-3xl font-extrabold text-gold-400" id="stat-top-nation">Argentina / France (8)</span>
+                    <span class="text-xs sm:text-sm text-gray-400 uppercase tracking-wider">Most Wins Nation</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Search & Interactive Filters Toolbar -->
+        <section class="glass-panel p-5 rounded-2xl border border-gray-800 mb-8 shadow-xl">
+            <div class="flex flex-col lg:flex-row gap-4 justify-between items-center">
+                
+                <!-- Search Input -->
+                <div class="relative w-full lg:w-1/3">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" id="searchInput" placeholder="Search player, club, or country..."
+                        class="w-full pl-11 pr-4 py-3 bg-darkBg/90 border border-gray-700 focus:border-gold-500 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-gold-500 transition-colors placeholder-gray-500 text-gray-200">
+                </div>
+
+                <!-- Filters Group -->
+                <div class="flex flex-wrap sm:flex-nowrap gap-3 w-full lg:w-auto">
+                    <!-- Position Filter -->
+                    <select id="positionFilter" class="w-full sm:w-auto bg-darkBg/90 border border-gray-700 focus:border-gold-500 text-gray-200 text-sm rounded-xl px-4 py-3 focus:outline-none cursor-pointer">
+                        <option value="All">All Positions</option>
+                        <option value="Forward">Forward</option>
+                        <option value="Midfielder">Midfielder</option>
+                        <option value="Defender">Defender</option>
+                        <option value="Goalkeeper">Goalkeeper</option>
+                    </select>
+
+                    <!-- Decade Filter -->
+                    <select id="decadeFilter" class="w-full sm:w-auto bg-darkBg/90 border border-gray-700 focus:border-gold-500 text-gray-200 text-sm rounded-xl px-4 py-3 focus:outline-none cursor-pointer">
+                        <option value="All">All Eras / Decades</option>
+                        <option value="2020s">2020s</option>
+                        <option value="2010s">2010s</option>
+                        <option value="2000s">2000s</option>
+                        <option value="1990s">1990s</option>
+                        <option value="1980s">1980s</option>
+                        <option value="1970s">1970s</option>
+                        <option value="1960s">1960s</option>
+                        <option value="1950s">1950s</option>
+                    </select>
+
+                    <!-- Sort Order -->
+                    <select id="sortOrder" class="w-full sm:w-auto bg-darkBg/90 border border-gray-700 focus:border-gold-500 text-gray-200 text-sm rounded-xl px-4 py-3 focus:outline-none cursor-pointer">
+                        <option value="desc">Newest First (Latest → 1956)</option>
+                        <option value="asc">Oldest First (1956 → Latest)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Active Results Bar -->
+            <div class="mt-4 pt-4 border-t border-gray-800/80 flex justify-between items-center text-xs text-gray-400">
+                <div>
+                    Showing <span id="visibleCount" class="font-bold text-gold-400">69</span> winners
+                </div>
+                <button id="resetBtn" class="text-gray-400 hover:text-gold-400 transition-colors flex items-center gap-1">
+                    <i class="fa-solid fa-rotate-left"></i> Reset Filters
+                </button>
+            </div>
+        </section>
+
+        <!-- Winners Grid -->
+        <section id="winnersGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Dynamic Cards Inserted Here by JS -->
+        </section>
+
+        <!-- Empty State -->
+        <div id="noResults" class="hidden text-center py-16 glass-panel rounded-2xl border border-gray-800 mt-6">
+            <i class="fa-regular fa-futbol text-5xl text-gray-600 mb-4 animate-bounce"></i>
+            <h3 class="text-xl font-bold text-gray-300">No Winners Found</h3>
+            <p class="text-gray-500 text-sm mt-1">Try tweaking your search query or filters.</p>
+        </div>
+    </main>
+
+    <!-- Detailed Modal View -->
+    <div id="winnerModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="relative w-full max-w-xl bg-cardBg rounded-2xl border border-gold-500/40 shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300" id="modalContainer">
+            <!-- Close Button -->
+            <button id="closeModal" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/60 text-gray-300 hover:text-white flex items-center justify-center hover:bg-gold-500/20 transition-all">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <!-- Modal Content (Injected by JS) -->
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 bg-darkBg py-8 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p>© 1956 - Present Ballon d'Or Legacy. Data & Media curated for sports fans worldwide.</p>
+            <div class="flex items-center gap-4 text-gray-400">
+                <span class="flex items-center gap-1"><i class="fa-solid fa-circle text-[8px] text-gold-400"></i> Rodri / Dembélé (Recent Winners)</span>
+                <span class="flex items-center gap-1"><i class="fa-solid fa-crown text-gold-400"></i> Lionel Messi (8x Golden Balls)</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // High quality inline SVG avatars/placeholders to ensure zero broken images or network blockages
+        const createPlayerSvg = (bgColor, iconClass, name, year) => {
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" viewBox="0 0 600 400">
+                <rect width="100%" height="100%" fill="${bgColor}"/>
+                <circle cx="300" cy="150" r="70" fill="#d4af37" opacity="0.2"/>
+                <path d="M300 90 A 40 40 0 0 1 300 170 A 40 40 0 0 1 300 90 Z" fill="#d4af37" opacity="0.5"/>
+                <path d="M220 250 C 220 200, 380 200, 380 250 L 380 280 L 220 280 Z" fill="#d4af37" opacity="0.5"/>
+                <text x="50%" y="330" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="28" fill="#F1C40F">${name}</text>
+                <text x="50%" y="365" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#9CA3AF">${year} Winner</text>
+            </svg>`;
+            return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+        };
+
+        const DEFAULT_FALLBACK_IMG = createPlayerSvg('#111827', 'trophy', 'Ballon d\'Or Legend', 'Legacy');
+
+        // Full Dataset of all Ballon d'Or winners from 1956 to Present with reliable SVG media URIs
+        const winnersData = [
+            { year: 2025, name: "Ousmane Dembélé", position: "Forward", club: "Paris Saint-Germain", flag: "🇫🇷", nation: "France", highlight: "Ligue 1 Champion, UEFA Champions League decisive attacker & domestic treble winner.", img: createPlayerSvg('#1a102f', 'user', 'Ousmane Dembélé', '2025') },
+            { year: 2024, name: "Rodri", position: "Midfielder", club: "Manchester City", flag: "🇪🇸", nation: "Spain", highlight: "Premier League winner, UEFA Euro 2024 Player of the Tournament & Champion.", img: createPlayerSvg('#0f2027', 'user', 'Rodri', '2024') },
+            { year: 2023, name: "Lionel Messi", position: "Forward", club: "PSG / Inter Miami", flag: "🇦🇷", nation: "Argentina", highlight: "2022 FIFA World Cup Winner, Golden Ball winner with 7 goals & 3 assists.", img: createPlayerSvg('#112233', 'user', 'Lionel Messi', '2023') },
+            { year: 2022, name: "Karim Benzema", position: "Forward", club: "Real Madrid", flag: "🇫🇷", nation: "France", highlight: "UEFA Champions League & La Liga winner, scored 44 goals in 46 games.", img: createPlayerSvg('#201a15', 'user', 'Karim Benzema', '2022') },
+            { year: 2021, name: "Lionel Messi", position: "Forward", club: "Barcelona / PSG", flag: "🇦🇷", nation: "Argentina", highlight: "Copa América Champion & Best Player, Copa del Rey winner.", img: createPlayerSvg('#112233', 'user', 'Lionel Messi', '2021') },
+            { year: 2020, name: "Not Awarded", position: "Forward", club: "N/A", flag: "🌐", nation: "Global", highlight: "Cancelled due to the COVID-19 global pandemic.", img: createPlayerSvg('#1f2937', 'ban', 'Not Awarded', '2020') },
+            { year: 2019, name: "Lionel Messi", position: "Forward", club: "Barcelona", flag: "🇦🇷", nation: "Argentina", highlight: "La Liga Champion, European Golden Shoe winner with 51 goals.", img: createPlayerSvg('#112233', 'user', 'Lionel Messi', '2019') },
+            { year: 2018, name: "Luka Modrić", position: "Midfielder", club: "Real Madrid", flag: "🇭🇷", nation: "Croatia", highlight: "UEFA Champions League Winner & World Cup Golden Ball finalist.", img: createPlayerSvg('#1e1b18', 'user', 'Luka Modrić', '2018') },
+            { year: 2017, name: "Cristiano Ronaldo", position: "Forward", club: "Real Madrid", flag: "🇵🇹", nation: "Portugal", highlight: "Champions League & La Liga double, top scorer in UCL with 12 goals.", img: createPlayerSvg('#2b1010', 'user', 'Cristiano Ronaldo', '2017') },
+            { year: 2016, name: "Cristiano Ronaldo", position: "Forward", club: "Real Madrid", flag: "🇵🇹", nation: "Portugal", highlight: "UEFA Euro 2016 Winner & UEFA Champions League Winner.", img: createPlayerSvg('#2b1010', 'user', 'Cristiano Ronaldo', '2016') },
+            { year: 2015, name: "Lionel Messi", position: "Forward", club: "Barcelona", flag: "🇦🇷", nation: "Argentina", highlight: "Treble winner (UCL, La Liga, Copa del Rey) with 52 goals.", img: createPlayerSvg('#112233', 'user', 'Lionel Messi', '2015') },
+            { year: 2014, name: "Cristiano Ronaldo", position: "Forward", club: "Real Madrid", flag: "🇵🇹", nation: "Portugal", highlight: "Record 17 goals in UEFA Champions League winning season, Copa del Rey.", img: createPlayerSvg('#2b1010', 'user', 'Cristiano Ronaldo', '2014') },
+            { year: 2013, name: "Cristiano Ronaldo", position: "Forward", club: "Real Madrid", flag: "🇵🇹", nation: "Portugal", highlight: "Scored 66 goals in 56 games for club and country.", img: createPlayerSvg('#2b1010', 'user', 'Cristiano Ronaldo', '2013') },
+            { year: 2012, name: "Lionel Messi", position: "Forward", club: "Barcelona", flag: "🇦🇷", nation: "Argentina", highlight: "Broke world record with 91 calendar year goals in 2012.", img: createPlayerSvg('#112233', 'user', 'Lionel Messi', '2012') },
+            { year: 2011, name: "Lionel Messi", position: "Forward", club: "Barcelona", flag: "🇦🇷", nation: "Argentina", highlight: "Champions League & La Liga winner, 53 goals in all competitions.", img: createPlayerSvg('#112233', 'user', 'Lionel Messi', '2011') },
+            { year: 2010, name: "Lionel Messi", position: "Forward", club: "Barcelona", flag: "🇦🇷", nation: "Argentina", highlight: "La Liga winner with 34 league goals, European Golden Shoe.", img: createPlayerSvg('#112233', 'user', 'Lionel Messi', '2010') },
+            { year: 2009, name: "Lionel Messi", position: "Forward", club: "Barcelona", flag: "🇦🇷", nation: "Argentina", highlight: "Historic Sextuple winner with FC Barcelona under Pep Guardiola.", img: createPlayerSvg('#112233', 'user', 'Lionel Messi', '2009') },
+            { year: 2008, name: "Cristiano Ronaldo", position: "Forward", club: "Manchester United", flag: "🇵🇹", nation: "Portugal", highlight: "UEFA Champions League & Premier League double, 42 goals.", img: createPlayerSvg('#2b1010', 'user', 'Cristiano Ronaldo', '2008') },
+            { year: 2007, name: "Kaká", position: "Midfielder", club: "AC Milan", flag: "🇧🇷", nation: "Brazil", highlight: "UEFA Champions League winner & top scorer with 10 goals.", img: createPlayerSvg('#131c15', 'user', 'Kaká', '2007') },
+            { year: 2006, name: "Fabio Cannavaro", position: "Defender", club: "Juventus / Real Madrid", flag: "🇮🇹", nation: "Italy", highlight: "FIFA World Cup winning captain, rare defender award recipient.", img: createPlayerSvg('#0f172a', 'user', 'Fabio Cannavaro', '2006') },
+            { year: 2005, name: "Ronaldinho", position: "Forward", club: "Barcelona", flag: "🇧🇷", nation: "Brazil", highlight: "La Liga Champion & mesmerising magician of world football.", img: createPlayerSvg('#131c15', 'user', 'Ronaldinho', '2005') },
+            { year: 2004, name: "Andriy Shevchenko", position: "Forward", club: "AC Milan", flag: "🇺🇦", nation: "Ukraine", highlight: "Serie A winner & Capocannoniere top scorer with 24 goals.", img: createPlayerSvg('#1e1b18', 'user', 'Andriy Shevchenko', '2004') },
+            { year: 2003, name: "Pavel Nedvěd", position: "Midfielder", club: "Juventus", flag: "🇨🇿", nation: "Czech Republic", highlight: "Led Juventus to Serie A title & UEFA Champions League final.", img: createPlayerSvg('#1e1b18', 'user', 'Pavel Nedvěd', '2003') },
+            { year: 2002, name: "Ronaldo Nazário", position: "Forward", club: "Inter / Real Madrid", flag: "🇧🇷", nation: "Brazil", highlight: "2002 FIFA World Cup winner & Golden Boot with 8 goals.", img: createPlayerSvg('#131c15', 'user', 'Ronaldo Nazário', '2002') },
+            { year: 2001, name: "Michael Owen", position: "Forward", club: "Liverpool", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", nation: "England", highlight: "Cup treble winner (UEFA Cup, FA Cup, League Cup) with Liverpool.", img: createPlayerSvg('#2b1010', 'user', 'Michael Owen', '2001') },
+            { year: 2000, name: "Luís Figo", position: "Midfielder", club: "Barcelona / Real Madrid", flag: "🇵🇹", nation: "Portugal", highlight: "Sensational blockbuster transfer year, Euro 2000 star performer.", img: createPlayerSvg('#2b1010', 'user', 'Luís Figo', '2000') },
+            { year: 1999, name: "Rivaldo", position: "Forward", club: "Barcelona", flag: "🇧🇷", nation: "Brazil", highlight: "La Liga winner & Copa América winner and top scorer.", img: createPlayerSvg('#131c15', 'user', 'Rivaldo', '1999') },
+            { year: 1998, name: "Zinedine Zidane", position: "Midfielder", club: "Juventus", flag: "🇫🇷", nation: "France", highlight: "1998 FIFA World Cup winner, scored two header goals in the Final.", img: createPlayerSvg('#1a102f', 'user', 'Zinedine Zidane', '1998') },
+            { year: 1997, name: "Ronaldo Nazário", position: "Forward", club: "Barcelona / Inter", flag: "🇧🇷", nation: "Brazil", highlight: "Youngest Ballon d'Or winner ever (21 years old), 47 goals in 49 games.", img: createPlayerSvg('#131c15', 'user', 'Ronaldo Nazário', '1997') },
+            { year: 1996, name: "Matthias Sammer", position: "Defender", club: "Borussia Dortmund", flag: "🇩🇪", nation: "Germany", highlight: "UEFA Euro 1996 Champion & Bundesliga title winner.", img: createPlayerSvg('#1e1b18', 'user', 'Matthias Sammer', '1996') },
+            { year: 1995, name: "George Weah", position: "Forward", club: "PSG / AC Milan", flag: "🇱🇷", nation: "Liberia", highlight: "First non-European player to win after rule expansion.", img: createPlayerSvg('#1e1b18', 'user', 'George Weah', '1995') },
+            { year: 1994, name: "Hristo Stoichkov", position: "Forward", club: "Barcelona", flag: "🇧🇬", nation: "Bulgaria", highlight: "La Liga winner & 1994 World Cup Golden Boot winner.", img: createPlayerSvg('#1e1b18', 'user', 'Hristo Stoichkov', '1994') },
+            { year: 1993, name: "Roberto Baggio", position: "Forward", club: "Juventus", flag: "🇮🇹", nation: "Italy", highlight: "UEFA Cup winner, scoring 39 goals across all competitions.", img: createPlayerSvg('#0f172a', 'user', 'Roberto Baggio', '1993') },
+            { year: 1992, name: "Marco van Basten", position: "Forward", club: "AC Milan", flag: "🇳🇱", nation: "Netherlands", highlight: "3rd Ballon d'Or, undefeated Serie A winner with AC Milan.", img: createPlayerSvg('#1c1300', 'user', 'Marco van Basten', '1992') },
+            { year: 1991, name: "Jean-Pierre Papin", position: "Forward", club: "Marseille", flag: "🇫🇷", nation: "France", highlight: "Ligue 1 title winner & top scorer for 4th consecutive year.", img: createPlayerSvg('#1a102f', 'user', 'Jean-Pierre Papin', '1991') },
+            { year: 1990, name: "Lothar Matthäus", position: "Midfielder", club: "Inter Milan", flag: "🇩🇪", nation: "Germany", highlight: "1990 FIFA World Cup winning captain for West Germany.", img: createPlayerSvg('#1e1b18', 'user', 'Lothar Matthäus', '1990') },
+            { year: 1989, name: "Marco van Basten", position: "Forward", club: "AC Milan", flag: "🇳🇱", nation: "Netherlands", highlight: "European Cup winner with AC Milan, scored two goals in final.", img: createPlayerSvg('#1c1300', 'user', 'Marco van Basten', '1989') },
+            { year: 1988, name: "Marco van Basten", position: "Forward", club: "AC Milan", flag: "🇳🇱", nation: "Netherlands", highlight: "UEFA Euro 1988 Winner, iconic volley in the Euro final.", img: createPlayerSvg('#1c1300', 'user', 'Marco van Basten', '1988') },
+            { year: 1987, name: "Ruud Gullit", position: "Midfielder", club: "PSV / AC Milan", flag: "🇳🇱", nation: "Netherlands", highlight: "Eredivisie champion & record transfer to AC Milan.", img: createPlayerSvg('#1c1300', 'user', 'Ruud Gullit', '1987') },
+            { year: 1986, name: "Igor Belanov", position: "Forward", club: "Dynamo Kyiv", flag: "🇺🇦", nation: "Soviet Union", highlight: "European Cup Winners' Cup champion with Dynamo Kyiv.", img: createPlayerSvg('#1e1b18', 'user', 'Igor Belanov', '1986') },
+            { year: 1985, name: "Michel Platini", position: "Midfielder", club: "Juventus", flag: "🇫🇷", nation: "France", highlight: "3rd consecutive Ballon d'Or award, European Cup winner.", img: createPlayerSvg('#1a102f', 'user', 'Michel Platini', '1985') },
+            { year: 1984, name: "Michel Platini", position: "Midfielder", club: "Juventus", flag: "🇫🇷", nation: "France", highlight: "UEFA Euro 1984 winner, scoring 9 goals in just 5 matches.", img: createPlayerSvg('#1a102f', 'user', 'Michel Platini', '1984') },
+            { year: 1983, name: "Michel Platini", position: "Midfielder", club: "Juventus", flag: "🇫🇷", nation: "France", highlight: "Coppa Italia winner & Serie A Capocannoniere with 16 goals.", img: createPlayerSvg('#1a102f', 'user', 'Michel Platini', '1983') },
+            { year: 1982, name: "Paolo Rossi", position: "Forward", club: "Juventus", flag: "🇮🇹", nation: "Italy", highlight: "1982 FIFA World Cup winner, Golden Boot & Golden Ball winner.", img: createPlayerSvg('#0f172a', 'user', 'Paolo Rossi', '1982') },
+            { year: 1981, name: "Karl-Heinz Rummenigge", position: "Forward", club: "Bayern Munich", flag: "🇩🇪", nation: "West Germany", highlight: "Back-to-back winner, Bundesliga champion and top scorer.", img: createPlayerSvg('#1e1b18', 'user', 'Karl-Heinz Rummenigge', '1981') },
+            { year: 1980, name: "Karl-Heinz Rummenigge", position: "Forward", club: "Bayern Munich", flag: "🇩🇪", nation: "West Germany", highlight: "UEFA Euro 1980 champion & Bundesliga winner.", img: createPlayerSvg('#1e1b18', 'user', 'Karl-Heinz Rummenigge', '1980') },
+            { year: 1979, name: "Kevin Keegan", position: "Forward", club: "Hamburger SV", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", nation: "England", highlight: "Led Hamburger SV to their first Bundesliga title in 19 years.", img: createPlayerSvg('#1e1b18', 'user', 'Kevin Keegan', '1979') },
+            { year: 1978, name: "Kevin Keegan", position: "Forward", club: "Hamburger SV", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", nation: "England", highlight: "Star forward in the Bundesliga following famous move from Liverpool.", img: createPlayerSvg('#1e1b18', 'user', 'Kevin Keegan', '1978') },
+            { year: 1977, name: "Allan Simonsen", position: "Forward", club: "Borussia Mönchengladbach", flag: "🇩🇰", nation: "Denmark", highlight: "Bundesliga title winner & UEFA Cup top scorer.", img: createPlayerSvg('#1e1b18', 'user', 'Allan Simonsen', '1977') },
+            { year: 1976, name: "Franz Beckenbauer", position: "Defender", club: "Bayern Munich", flag: "🇩🇪", nation: "West Germany", highlight: "Captained Bayern Munich to 3rd consecutive European Cup.", img: createPlayerSvg('#1e1b18', 'user', 'Franz Beckenbauer', '1976') },
+            { year: 1975, name: "Oleg Blokhin", position: "Forward", club: "Dynamo Kyiv", flag: "🇺🇦", nation: "Soviet Union", highlight: "European Super Cup winner, scoring against Bayern Munich.", img: createPlayerSvg('#1e1b18', 'user', 'Oleg Blokhin', '1975') },
+            { year: 1974, name: "Johan Cruyff", position: "Forward", club: "Barcelona", flag: "🇳🇱", nation: "Netherlands", highlight: "3rd Ballon d'Or, led Netherlands to World Cup Final with 'Total Football'.", img: createPlayerSvg('#1c1300', 'user', 'Johan Cruyff', '1974') },
+            { year: 1973, name: "Johan Cruyff", position: "Forward", club: "Ajax / Barcelona", flag: "🇳🇱", nation: "Netherlands", highlight: "Completed European Cup hat-trick with Ajax before Barcelona transfer.", img: createPlayerSvg('#1c1300', 'user', 'Johan Cruyff', '1973') },
+            { year: 1972, name: "Franz Beckenbauer", position: "Defender", club: "Bayern Munich", flag: "🇩🇪", nation: "West Germany", highlight: "UEFA Euro 1972 winner & Bundesliga champion as iconic Sweeper.", img: createPlayerSvg('#1e1b18', 'user', 'Franz Beckenbauer', '1972') },
+            { year: 1971, name: "Johan Cruyff", position: "Forward", club: "Ajax", flag: "🇳🇱", nation: "Netherlands", highlight: "First European Cup victory with Ajax, scoring 27 goals in season.", img: createPlayerSvg('#1c1300', 'user', 'Johan Cruyff', '1971') },
+            { year: 1970, name: "Gerd Müller", position: "Forward", club: "Bayern Munich", flag: "🇩🇪", nation: "West Germany", highlight: "Scored 10 goals at 1970 FIFA World Cup to win Golden Boot.", img: createPlayerSvg('#1e1b18', 'user', 'Gerd Müller', '1970') },
+            { year: 1969, name: "Gianni Rivera", position: "Midfielder", club: "AC Milan", flag: "🇮🇹", nation: "Italy", highlight: "European Cup winner with AC Milan as playmaker captain.", img: createPlayerSvg('#0f172a', 'user', 'Gianni Rivera', '1969') },
+            { year: 1968, name: "George Best", position: "Forward", club: "Manchester United", flag: "🇬🇧", nation: "Northern Ireland", highlight: "European Cup winner, scored 32 goals in all competitions.", img: createPlayerSvg('#2b1010', 'user', 'George Best', '1968') },
+            { year: 1967, name: "Flórián Albert", position: "Forward", club: "Ferencváros", flag: "🇭🇺", nation: "Hungary", highlight: "Hungarian League champion & top scorer in Fairs Cup.", img: createPlayerSvg('#1e1b18', 'user', 'Flórián Albert', '1967') },
+            { year: 1966, name: "Bobby Charlton", position: "Midfielder", club: "Manchester United", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", nation: "England", highlight: "1966 FIFA World Cup winner & Golden Ball recipient.", img: createPlayerSvg('#2b1010', 'user', 'Bobby Charlton', '1966') },
+            { year: 1965, name: "Eusébio", position: "Forward", club: "Benfica", flag: "🇵🇹", nation: "Portugal", highlight: "European Cup finalist & Portuguese league top scorer with 28 goals.", img: createPlayerSvg('#2b1010', 'user', 'Eusébio', '1965') },
+            { year: 1964, name: "Denis Law", position: "Forward", club: "Manchester United", flag: "🏴󠁧󠁢󠁳󠁣󠁴󠁿", nation: "Scotland", highlight: "Scored 46 goals in a single season for Manchester United.", img: createPlayerSvg('#2b1010', 'user', 'Denis Law', '1964') },
+            { year: 1963, name: "Lev Yashin", position: "Goalkeeper", club: "Dynamo Moscow", flag: "🇷🇺", nation: "Soviet Union", highlight: "Only goalkeeper in football history to win the Ballon d'Or.", img: createPlayerSvg('#111827', 'shield', 'Lev Yashin', '1963') },
+            { year: 1962, name: "Josef Masopust", position: "Midfielder", club: "Dukla Prague", flag: "🇨🇿", nation: "Czechoslovakia", highlight: "Led Czechoslovakia to 1962 FIFA World Cup Final.", img: createPlayerSvg('#1e1b18', 'user', 'Josef Masopust', '1962') },
+            { year: 1961, name: "Omar Sívori", position: "Forward", club: "Juventus", flag: "🇮🇹", nation: "Italy", highlight: "Serie A champion with Juventus, scoring 25 league goals.", img: createPlayerSvg('#0f172a', 'user', 'Omar Sívori', '1961') },
+            { year: 1960, name: "Luis Suárez", position: "Midfielder", club: "Barcelona", flag: "🇪🇸", nation: "Spain", highlight: "La Liga & Fairs Cup double winner with Barcelona.", img: createPlayerSvg('#0f2027', 'user', 'Luis Suárez', '1960') },
+            { year: 1959, name: "Alfredo Di Stéfano", position: "Forward", club: "Real Madrid", flag: "🇪🇸", nation: "Spain", highlight: "Scored in 4th consecutive European Cup final victory.", img: createPlayerSvg('#0f2027', 'user', 'Alfredo Di Stéfano', '1959') },
+            { year: 1958, name: "Raymond Kopa", position: "Forward", club: "Real Madrid", flag: "🇫🇷", nation: "France", highlight: "European Cup winner with Real Madrid & 3rd at 1958 World Cup.", img: createPlayerSvg('#1a102f', 'user', 'Raymond Kopa', '1958') },
+            { year: 1957, name: "Alfredo Di Stéfano", position: "Forward", club: "Real Madrid", flag: "🇪🇸", nation: "Spain", highlight: "European Cup & La Liga double with Real Madrid.", img: createPlayerSvg('#0f2027', 'user', 'Alfredo Di Stéfano', '1957') },
+            { year: 1956, name: "Stanley Matthews", position: "Forward", club: "Blackpool", flag: "🏴󠁧󠁢󠁥󠁮󠁧󠁿", nation: "England", highlight: "Inaugural Ballon d'Or winner at the age of 41.", img: createPlayerSvg('#1e1b18', 'user', 'Stanley Matthews', '1956') }
+        ];
+
+        // State Elements
+        let currentSearch = "";
+        let currentPosition = "All";
+        let currentDecade = "All";
+        let currentSort = "desc";
+
+        // DOM Handles
+        const winnersGrid = document.getElementById('winnersGrid');
+        const searchInput = document.getElementById('searchInput');
+        const positionFilter = document.getElementById('positionFilter');
+        const decadeFilter = document.getElementById('decadeFilter');
+        const sortOrder = document.getElementById('sortOrder');
+        const visibleCount = document.getElementById('visibleCount');
+        const resetBtn = document.getElementById('resetBtn');
+        const noResults = document.getElementById('noResults');
+
+        // Modal Elements
+        const winnerModal = document.getElementById('winnerModal');
+        const modalContainer = document.getElementById('modalContainer');
+        const modalContent = document.getElementById('modalContent');
+        const closeModal = document.getElementById('closeModal');
+
+        // Position Badge Styling
+        function getPositionBadge(pos) {
+            switch(pos) {
+                case 'Forward': return 'bg-red-500/10 text-red-400 border-red-500/30';
+                case 'Midfielder': return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
+                case 'Defender': return 'bg-blue-500/10 text-blue-400 border-blue-500/30';
+                case 'Goalkeeper': return 'bg-amber-500/10 text-amber-400 border-amber-500/30';
+                default: return 'bg-gray-500/10 text-gray-400 border-gray-500/30';
+            }
+        }
+
+        // Dynamic Calculations for Statistics Counter
+        function calculateStats() {
+            document.getElementById('stat-total').textContent = winnersData.length;
+
+            const playerWins = {};
+            const clubWins = {};
+            const nationWins = {};
+
+            winnersData.forEach(item => {
+                if(item.name !== "Not Awarded") {
+                    playerWins[item.name] = (playerWins[item.name] || 0) + 1;
+                    
+                    // Club stats parsing
+                    const clubs = item.club.split('/').map(c => c.trim());
+                    clubs.forEach(c => {
+                        clubWins[c] = (clubWins[c] || 0) + 1;
+                    });
+
+                    nationWins[item.nation] = (nationWins[item.nation] || 0) + 1;
+                }
+            });
+
+            // Find Top Player
+            let topPlayer = Object.keys(playerWins).reduce((a, b) => playerWins[a] > playerWins[b] ? a : b);
+            document.getElementById('stat-top-player').textContent = `${topPlayer} (${playerWins[topPlayer]})`;
+
+            // Find Top Club
+            let topClub = Object.keys(clubWins).reduce((a, b) => clubWins[a] > clubWins[b] ? a : b);
+            document.getElementById('stat-top-club').textContent = `${topClub} (${clubWins[topClub]})`;
+
+            // Find Top Nation
+            let topNation = Object.keys(nationWins).reduce((a, b) => nationWins[a] > nationWins[b] ? a : b);
+            document.getElementById('stat-top-nation').textContent = `${topNation} (${nationWins[topNation]})`;
+        }
+
+        // Render Cards
+        function renderWinners() {
+            // Filter logic
+            let filtered = winnersData.filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                      item.club.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                      item.nation.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                      item.year.toString().includes(currentSearch);
+                
+                const matchesPosition = currentPosition === "All" || item.position === currentPosition;
+
+                let matchesDecade = true;
+                if (currentDecade !== "All") {
+                    const decadeStart = parseInt(currentDecade.substring(0, 4));
+                    matchesDecade = item.year >= decadeStart && item.year < decadeStart + 10;
+                }
+
+                return matchesSearch && matchesPosition && matchesDecade;
+            });
+
+            // Sorting logic
+            filtered.sort((a, b) => {
+                return currentSort === 'desc' ? b.year - a.year : a.year - b.year;
+            });
+
+            // Update visible counter
+            visibleCount.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                winnersGrid.innerHTML = "";
+                noResults.classList.remove('hidden');
+                return;
+            }
+
+            noResults.classList.add('hidden');
+
+            // Generate HTML Grid
+            winnersGrid.innerHTML = filtered.map(winner => `
+                <div onclick="openWinnerModal(${winner.year})" class="group relative rounded-2xl glass-panel p-5 gold-border-glow transition-all duration-300 transform hover:-translate-y-1 cursor-pointer flex flex-col justify-between">
+                    <div>
+                        <!-- Header / Year & Flag -->
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-xl font-black text-gold-400 tracking-wider">
+                                <i class="fa-solid fa-trophy text-sm mr-1"></i>${winner.year}
+                            </span>
+                            <span class="text-2xl" title="${winner.nation}">${winner.flag}</span>
+                        </div>
+
+                        <!-- Card Image Avatar with Fallback -->
+                        <div class="relative w-full h-48 mb-4 rounded-xl overflow-hidden bg-gray-900 border border-gray-800 flex items-center justify-center">
+                            <img src="${winner.img}" alt="${winner.name}" 
+                                class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                                onerror="this.onerror=null; this.src='${DEFAULT_FALLBACK_IMG}';">
+                            <div class="absolute inset-0 bg-gradient-to-t from-darkBg via-transparent to-transparent opacity-80"></div>
+                            
+                            <!-- Position Badge Over Image -->
+                            <span class="absolute bottom-2 left-2 text-[10px] uppercase font-bold tracking-widest px-2.5 py-1 rounded-md border ${getPositionBadge(winner.position)} backdrop-blur-md">
+                                ${winner.position}
+                            </span>
+                        </div>
+
+                        <!-- Player Information -->
+                        <h3 class="text-lg font-bold text-gray-100 group-hover:text-gold-300 transition-colors line-clamp-1">
+                            ${winner.name}
+                        </h3>
+                        <p class="text-xs text-gray-400 mt-0.5 flex items-center gap-1">
+                            <i class="fa-solid fa-shield-halved text-[10px] text-gray-500"></i> ${winner.club}
+                        </p>
+                    </div>
+
+                    <!-- Highlight Snippet Footer -->
+                    <div class="mt-4 pt-3 border-t border-gray-800/80">
+                        <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed">
+                            "${winner.highlight}"
+                        </p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Open Modal Details View
+        function openWinnerModal(year) {
+            const winner = winnersData.find(w => w.year === year);
+            if (!winner) return;
+
+            modalContent.innerHTML = `
+                <div class="relative">
+                    <!-- Modal Banner Header Image -->
+                    <div class="h-56 w-full bg-gray-900 relative overflow-hidden">
+                        <img src="${winner.img}" alt="${winner.name}" class="w-full h-full object-cover object-top" onerror="this.onerror=null; this.src='${DEFAULT_FALLBACK_IMG}';">
+                        <div class="absolute inset-0 bg-gradient-to-t from-cardBg via-cardBg/60 to-transparent"></div>
+                        
+                        <div class="absolute bottom-4 left-6 flex items-center gap-3">
+                            <span class="text-4xl">${winner.flag}</span>
+                            <div>
+                                <span class="text-xs font-semibold text-gold-400 uppercase tracking-widest">Ballon d'Or Winner</span>
+                                <h2 class="text-2xl font-black text-white">${winner.name}</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Body Content -->
+                    <div class="p-6 space-y-4">
+                        <div class="grid grid-cols-2 gap-3 text-sm">
+                            <div class="p-3 bg-darkBg/60 rounded-xl border border-gray-800">
+                                <span class="text-xs text-gray-400 block uppercase">Winning Year</span>
+                                <span class="text-lg font-bold text-gold-400">${winner.year}</span>
+                            </div>
+                            <div class="p-3 bg-darkBg/60 rounded-xl border border-gray-800">
+                                <span class="text-xs text-gray-400 block uppercase">Position</span>
+                                <span class="text-base font-semibold text-gray-200">${winner.position}</span>
+                            </div>
+                            <div class="p-3 bg-darkBg/60 rounded-xl border border-gray-800">
+                                <span class="text-xs text-gray-400 block uppercase">Club</span>
+                                <span class="text-base font-semibold text-gray-200">${winner.club}</span>
+                            </div>
+                            <div class="p-3 bg-darkBg/60 rounded-xl border border-gray-800">
+                                <span class="text-xs text-gray-400 block uppercase">Nationality</span>
+                                <span class="text-base font-semibold text-gray-200">${winner.nation}</span>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-gold-500/5 rounded-xl border border-gold-500/20">
+                            <h4 class="text-xs font-bold text-gold-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                                <i class="fa-solid fa-star text-gold-400"></i> Season Highlight & Accomplishments
+                            </h4>
+                            <p class="text-sm text-gray-300 leading-relaxed">
+                                ${winner.highlight}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            winnerModal.classList.remove('opacity-0', 'pointer-events-none');
+            modalContainer.classList.remove('scale-95');
+            modalContainer.classList.add('scale-100');
+        }
+
+        // Close Modal Handler
+        function hideModal() {
+            winnerModal.classList.add('opacity-0', 'pointer-events-none');
+            modalContainer.classList.remove('scale-100');
+            modalContainer.classList.add('scale-95');
+        }
+
+        closeModal.addEventListener('click', hideModal);
+        winnerModal.addEventListener('click', (e) => {
+            if (e.target === winnerModal) hideModal();
+        });
+
+        // Event Listeners for Filters
+        searchInput.addEventListener('input', (e) => {
+            currentSearch = e.target.value;
+            renderWinners();
+        });
+
+        positionFilter.addEventListener('change', (e) => {
+            currentPosition = e.target.value;
+            renderWinners();
+        });
+
+        decadeFilter.addEventListener('change', (e) => {
+            currentDecade = e.target.value;
+            renderWinners();
+        });
+
+        sortOrder.addEventListener('change', (e) => {
+            currentSort = e.target.value;
+            renderWinners();
+        });
+
+        resetBtn.addEventListener('click', () => {
+            currentSearch = "";
+            currentPosition = "All";
+            currentDecade = "All";
+            currentSort = "desc";
+
+            searchInput.value = "";
+            positionFilter.value = "All";
+            decadeFilter.value = "All";
+            sortOrder.value = "desc";
+
+            renderWinners();
+        });
+
+        // Initial Load
+        window.addEventListener('DOMContentLoaded', () => {
+            calculateStats();
+            renderWinners();
+        });
+    </script>
+</body>
+</html>
